@@ -8,6 +8,6 @@ start -> 0;
 2 -> 3 [label="B, D, B, U", fontsize=8];
 0 [shape=circle];
 1 [shape=circle];
-2 [shape=circle];
+2 [shape=circle, style=filled, color=red, fillcolor="#F1ADA3", penwidth=2];
 3 [shape=doublecircle];
 }
