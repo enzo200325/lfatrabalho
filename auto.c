@@ -89,10 +89,10 @@ int processa(int u, int i, int deve_estar_vazia) {
 void grafo_png() {
     for(int i = 1; i < contador-1; i++) {
         char comando[40];
-        sprintf(comando, "dot -Tpng %d.dot > frame%d.png", i, i);
+        sprintf(comando, "dot -Tsvg %d.dot > frame%d.svg", i, i);
         system(comando);
     }
-    const char *comando = "open 2.png";
+    const char *comando = "cmd.exe /C start frame2.svg";
     system(comando);
 }
 
@@ -140,4 +140,3 @@ int main() {
     
     grafo_png();    
 } 
-     
