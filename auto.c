@@ -3,8 +3,6 @@
 #include <string.h> 
 #define MAX 505
 
-// cuidar com string vazia depois
-
 char entrada[MAX]; 
 int vai[MAX][MAX][256], final[MAX]; 
 char desempilha[MAX][MAX][256], empilha[MAX][MAX][256], coloca_saida[MAX][MAX][256]; 
