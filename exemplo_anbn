@@ -1,6 +1,6 @@
 2 3 1
-0 0 a $ a 
-0 1 b a $ 
-1 1 b a $
+0 0 A $ A 
+0 1 B A $ 
+1 1 B A $
 1 1 
-aabb
+AABB

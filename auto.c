@@ -77,7 +77,7 @@ void grafo(int destaca, int destaca_letra) {
         adicionar_aresta(arquivo, arestas[i][0], arestas[i][1], arestas_extra[i][0], arestas_extra[i][1], arestas_extra[i][2]); 
     } 
 
-    char label_pilha[MAX]; 
+    char label_pilha[MAX+100]; 
     sprintf(label_pilha, "Pilha: %s\n", stack); 
     //printf("%s\n", label_pilha); 
 
