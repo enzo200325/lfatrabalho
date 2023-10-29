@@ -43,10 +43,10 @@ void grafo(int destaca) {
     char nome_arquivo[20]; 
     sprintf(nome_arquivo, "%d.dot", contador++); 
     FILE* arquivo = fopen(nome_arquivo, "w"); 
-    printf("numero_transicoes: %d\n", numero_transicoes); 
+    // printf("numero_transicoes: %d\n", numero_transicoes); 
     iniciar_grafo(arquivo); 
     for (int i = 0; i < numero_transicoes; i++) {
-        printf("i: %d\n", i); 
+        // printf("i: %d\n", i); 
         adicionar_aresta(arquivo, arestas[i][0], arestas[i][1], arestas_extra[i][0], arestas_extra[i][1], arestas_extra[i][2]); 
     } 
     adicionar_nodos(arquivo, destaca); 
@@ -56,14 +56,14 @@ void grafo(int destaca) {
 
 int processa(int u, int i, int deve_estar_vazia) {
     grafo(u); 
-    printf("u: %d | i: %d | entrada[i]: %d\n", u, i, entrada[i]); 
+    // printf("u: %d | i: %d | entrada[i]: %d\n", u, i, entrada[i]); 
     if (i == tamanho_entrada) {
         int ok = final[u] && (deve_estar_vazia ? (tamanho_pilha == 0) : 1); 
         return ok; 
     } 
     int aceita = 0; 
     for (int v = 0; v < numero_estados; v++) {
-        printf("v: %d | vai[u][v][entrada[i]]: %d\n", v, vai[u][v][entrada[i]]); 
+        // printf("v: %d | vai[u][v][entrada[i]]: %d\n", v, vai[u][v][entrada[i]]); 
         if (vai[u][v][entrada[i]]) {
             if (desempilha[u][v][entrada[i]] != '$') {
                 if (tamanho_pilha && stack[tamanho_pilha-1] == desempilha[u][v][entrada[i]]) tamanho_pilha--; 
@@ -72,7 +72,7 @@ int processa(int u, int i, int deve_estar_vazia) {
             if (empilha[u][v][entrada[i]] != '$') {
                 stack[tamanho_pilha++] = empilha[u][v][entrada[i]]; 
             } 
-            printf("i: %d | entrada[i]: %d | entrada[i] != '$': %d\n", i, entrada[i], entrada[i] != '$'); 
+            // printf("i: %d | entrada[i]: %d | entrada[i] != '$': %d\n", i, entrada[i], entrada[i] != '$'); 
             aceita |= processa(v, i + 1, deve_estar_vazia); 
         } 
     } 
@@ -129,7 +129,7 @@ int main() {
 
     scanf("%s", entrada); 
     tamanho_entrada = strlen(entrada); 
-    printf("%s\n", entrada); 
+    printf("String de entrada: %s\n", entrada); 
     
     int q0 = 0; 
     printf((processa(q0, 0, deve_estar_vazia) ? "Aceita\n" : "Nao Aceita\n")); 
