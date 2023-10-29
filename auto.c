@@ -93,8 +93,8 @@ int main() {
         desempilha[i][j][c] = empilha[i][j][c] = '$'; 
     } 
 
-    scanf("%d", &numero_transicoes); 
     scanf(" %d", &numero_estados);
+    scanf("%d", &numero_transicoes); 
 
     for (int i = 0; i < numero_transicoes; i++) {
         int u, v; // u and v indexed by 0
