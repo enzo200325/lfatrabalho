@@ -1,4 +1,4 @@
-N M 
-u v trans uses pushes outputs
+N M must_be_empty
+u v trans uses pushes
 binary_array_telling_if_it_is_final
 input_string
