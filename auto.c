@@ -13,8 +13,8 @@ char arestas_extra[MAX][4];
 int tamanho_entrada, numero_estados, numero_transicoes; 
 int contador = 1; 
 
-char stack[MAX], output[MAX]; 
-int tamanho_pilha = 0, imprime = 0, tamanho_output = 0; 
+char stack[MAX]; 
+int tamanho_pilha = 0; 
 
 void iniciar_grafo(FILE* arquivo) {
     fprintf(arquivo, "digraph {\n"); 
@@ -22,8 +22,8 @@ void iniciar_grafo(FILE* arquivo) {
     fprintf(arquivo, "start [shape=point, width=0];\n"); 
     fprintf(arquivo, "start -> 0;\n"); 
 } 
-void adicionar_aresta(FILE* arquivo, int u, int v, char a, char b, char c, char d) {
-    fprintf(arquivo, "%d -> %d [label=\"%c, %c, %c, %c\", fontsize=8];\n", u, v, a, b, c, d); 
+void adicionar_aresta(FILE* arquivo, int u, int v, char a, char b, char c) {
+    fprintf(arquivo, "%d -> %d [label=\"%c, %c, %c\", fontsize=8];\n", u, v, a, b, c); 
 } 
 void terminar_grafo(FILE* arquivo) {
     fprintf(arquivo, "}\n") ;
@@ -41,7 +41,7 @@ void adicionar_nodos(FILE* arquivo, int dest) {
     } 
 } 
 
-void make_graph(int destaca) {
+void grafo(int destaca) {
     char nome_arquivo[20]; 
     sprintf(nome_arquivo, "%d.dot", contador++); 
     FILE* arquivo = fopen(nome_arquivo, "w"); 
@@ -49,7 +49,7 @@ void make_graph(int destaca) {
     iniciar_grafo(arquivo); 
     for (int i = 0; i < numero_transicoes; i++) {
         printf("i: %d\n", i); 
-        adicionar_aresta(arquivo, arestas[i][0], arestas[i][1], arestas_extra[i][0], arestas_extra[i][1], arestas_extra[i][2], arestas_extra[i][3]); 
+        adicionar_aresta(arquivo, arestas[i][0], arestas[i][1], arestas_extra[i][0], arestas_extra[i][1], arestas_extra[i][2]); 
     } 
     adicionar_nodos(arquivo, destaca); 
     terminar_grafo(arquivo); 
@@ -57,14 +57,9 @@ void make_graph(int destaca) {
 } 
 
 int processa(int u, int i, int deve_estar_vazia) {
-    make_graph(u); 
+    grafo(u); 
     if (i == tamanho_entrada) {
         int ok = final[u] && (deve_estar_vazia ? (tamanho_pilha == 0) : 1); 
-        if (ok && imprime) {
-            output[tamanho_output] = '\0'; 
-            printf("saida: %s\n", output); 
-            imprime = 0; 
-        } 
         return ok; 
     } 
     int aceita = 0; 
@@ -76,24 +71,20 @@ int processa(int u, int i, int deve_estar_vazia) {
             } 
             if (empilha[u][v][entrada[i]] != '$') {
                 stack[tamanho_pilha++] = empilha[u][v][entrada[i]]; 
-                output[tamanho_output++] = coloca_saida[u][v][entrada[i]]; 
             } 
             aceita |= processa(v, i + (entrada[i] != '$'), deve_estar_vazia); 
         } 
     } 
     tamanho_pilha--; 
-    tamanho_output--; 
     return aceita; 
 } 
 
-void grafo_png() {
-    for(int i = 1; i < contador-1; i++) {
+void grafo_svg() {
+    for(int i = 1; i < contador; i++) {
         char comando[40];
         sprintf(comando, "dot -Tsvg %d.dot > frame%d.svg", i, i);
         system(comando);
     }
-    const char *comando = "cmd.exe /C start frame2.svg";
-    system(comando);
 }
 
 int main() {
@@ -107,20 +98,18 @@ int main() {
 
     for (int i = 0; i < numero_transicoes; i++) {
         int u, v; // u and v indexed by 0
-        char c, us, pl, out; 
-        scanf(" %d %d %c %c %c %c", &u, &v, &c, &us, &pl, &out); 
+        char c, us, pl; 
+        scanf(" %d %d %c %c %c", &u, &v, &c, &us, &pl); 
 
         arestas[i][0] = u; 
         arestas[i][1] = v; 
         arestas_extra[i][0] = c; 
         arestas_extra[i][1] = us; 
         arestas_extra[i][2] = pl; 
-        arestas_extra[i][3] = out; 
 
         vai[u][v][c] = 1; 
         desempilha[u][v][c] = us; 
         empilha[u][v][c] = pl; 
-        coloca_saida[u][v][c] = out; 
     } 
 
 
@@ -128,15 +117,14 @@ int main() {
         scanf(" %d", &final[i]); // binary string with 1 on the i-th position telling that state i is final
     } 
 
-    make_graph(-1); 
+    grafo(-1); 
 
     scanf("%s", entrada); 
     tamanho_entrada = strlen(entrada); 
     printf("%s\n", entrada); 
     
     int q0 = 0; 
-    imprime = 1; 
     printf((processa(q0, 0, 0) ? "Aceita\n" : "Nao Aceita\n")); 
     
-    grafo_png();    
+    grafo_svg();    
 } 
