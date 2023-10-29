@@ -106,7 +106,7 @@ int processa(int u, int i, int deve_estar_vazia) {
         // printf("v: %d | vai[u][v][entrada[i]]: %d\n", v, vai[u][v][entrada[i]]); 
         if (vai[u][v][entrada[i]]) {
             if (desempilha[u][v][entrada[i]] != '$') {
-                if (tamanho_pilha && stack[tamanho_pilha-1] == desempilha[u][v][entrada[i]]) tamanho_pilha--; 
+                if (tamanho_pilha && stack[tamanho_pilha-1] == desempilha[u][v][entrada[i]]) stack[--tamanho_pilha] = '\0'; 
                 else continue; 
             } 
             if (empilha[u][v][entrada[i]] != '$') {
@@ -116,7 +116,7 @@ int processa(int u, int i, int deve_estar_vazia) {
             aceita |= processa(v, i + 1, deve_estar_vazia); 
         } 
     } 
-    tamanho_pilha--; 
+    stack[--tamanho_pilha] = '\0'; 
     return aceita; 
 } 
 
