@@ -21,7 +21,7 @@ void iniciar_grafo(FILE* arquivo) {
     fprintf(arquivo, "start -> 0;\n"); 
 } 
 void adicionar_aresta(FILE* arquivo, int u, int v, char a, char b, char c) {
-    fprintf(arquivo, "%d -> %d [label=\"%c, %c, %c\", fontsize=8];\n", u, v, a, b, c); 
+    fprintf(arquivo, "%d -> %d [label=\"%c, %c, %c\", fontsize=10];\n", u, v, a, b, c); 
 } 
 void terminar_grafo(FILE* arquivo) {
     fprintf(arquivo, "}\n") ;
@@ -39,7 +39,34 @@ void adicionar_nodos(FILE* arquivo, int dest) {
     } 
 } 
 
-void grafo(int destaca) {
+void iniciar_label(FILE* arquivo) {
+    fprintf(arquivo, "label = <<TABLE BORDER=\"0\" CELLBORDER=\"0\">"); 
+} 
+void terminar_label(FILE* arquivo) {
+    fprintf(arquivo, "</TABLE>>;"); 
+} 
+void adicionar_espaco_label(FILE* arquivo) {
+    fprintf(arquivo, "<TR><TD></TD></TR>");
+} 
+
+void adicionar_label(FILE* arquivo, char* s) {
+    fprintf(arquivo, "<TR><TD>%s</TD></TR>;", s);
+} 
+void adicionar_label_palavra_destaque(FILE* arquivo, int posicao_destacada) {
+       fprintf(arquivo, "<TR><TD>"); 
+       for (int i = 0; i < tamanho_entrada; i++) {
+           char c = entrada[i]; 
+           if (i == posicao_destacada) fprintf(arquivo, "<SUB><FONT COLOR=\"red\">%c</FONT></SUB>", c); 
+           else fprintf(arquivo, "<SUB>%c</SUB>", c); 
+       } 
+       fprintf(arquivo, "</TD></TR>"); 
+} 
+
+void ajustar_tables(FILE* arquivo) {
+    fprintf(arquivo, "labeljust = \"r\"; labelloc = \"r\";"); 
+} 
+
+void grafo(int destaca, int destaca_letra) {
     char nome_arquivo[20]; 
     sprintf(nome_arquivo, "%d.dot", contador++); 
     FILE* arquivo = fopen(nome_arquivo, "w"); 
@@ -49,14 +76,27 @@ void grafo(int destaca) {
         // printf("i: %d\n", i); 
         adicionar_aresta(arquivo, arestas[i][0], arestas[i][1], arestas_extra[i][0], arestas_extra[i][1], arestas_extra[i][2]); 
     } 
+
+    char label_pilha[MAX]; 
+    sprintf(label_pilha, "Pilha: %s\n", stack); 
+    //printf("%s\n", label_pilha); 
+
+    iniciar_label(arquivo); 
+    adicionar_label_palavra_destaque(arquivo, destaca_letra); 
+    adicionar_espaco_label(arquivo); 
+    adicionar_label(arquivo, label_pilha); 
+    terminar_label(arquivo); 
+
+    ajustar_tables(arquivo); 
+
     adicionar_nodos(arquivo, destaca); 
     terminar_grafo(arquivo); 
     fclose(arquivo); 
 } 
 
 int processa(int u, int i, int deve_estar_vazia) {
-    grafo(u); 
     // printf("u: %d | i: %d | entrada[i]: %d\n", u, i, entrada[i]); 
+    grafo(u, i); 
     if (i == tamanho_entrada) {
         int ok = final[u] && (deve_estar_vazia ? (tamanho_pilha == 0) : 1); 
         return ok; 
@@ -125,11 +165,10 @@ int main() {
         scanf(" %d", &final[i]); // binary string with 1 on the i-th position telling that state i is final
     } 
 
-    grafo(-1); 
-
-    scanf("%s", entrada); 
+    scanf(" %s", entrada); 
     tamanho_entrada = strlen(entrada); 
     printf("String de entrada: %s\n", entrada); 
+    grafo(-1, -1); 
     
     int q0 = 0; 
     printf((processa(q0, 0, deve_estar_vazia) ? "Aceita\n" : "Nao Aceita\n")); 
