@@ -79,7 +79,6 @@ void grafo(int destaca, int destaca_letra) {
 
     char label_pilha[MAX+100]; 
     sprintf(label_pilha, "Pilha: %s\n", stack); 
-    //printf("%s\n", label_pilha); 
 
     iniciar_label(arquivo); 
     adicionar_label_palavra_destaque(arquivo, destaca_letra); 
@@ -95,7 +94,7 @@ void grafo(int destaca, int destaca_letra) {
 } 
 
 int processa(int u, int i, int deve_estar_vazia) {
-    // printf("u: %d | i: %d | entrada[i]: %d\n", u, i, entrada[i]); 
+    printf("u: %d | i: %d | entrada[i]: %d\n", u, i, entrada[i]); 
     grafo(u, i); 
     if (i == tamanho_entrada) {
         int ok = final[u] && (deve_estar_vazia ? (tamanho_pilha == 0) : 1); 
@@ -128,6 +127,10 @@ void grafo_svg() {
     }
 }
 
+int eh_numero(char* s) {
+
+} 
+
 int main() {
     for (int i = 0; i < MAX; i++) for (int j = 0; j < MAX; j++) for (int c = 0; c < 256; c++) {
         vai[i][j][c] = 0; 
@@ -137,6 +140,20 @@ int main() {
     scanf(" %d", &numero_estados);
     scanf(" %d", &numero_transicoes); 
     int deve_estar_vazia; scanf(" %d", &deve_estar_vazia); 
+
+    if (numero_estados <= 0) {
+        printf("O numero de estados nao pode ser inferior a 1\n"); 
+        return 0; 
+    } 
+    else if (numero_estados >= MAX) {
+        printf("O numero de estados nao pode ser superior a %d\n", MAX-1); 
+        return 0; 
+    } 
+
+    if (numero_transicoes < 0) {
+        printf("O numero de transicoes nao pode ser negativo\n"); 
+        return 0; 
+    } 
 
     for (int i = 0; i < numero_transicoes; i++) {
         int u, v; // u and v indexed by 0
@@ -148,6 +165,16 @@ int main() {
         arestas_extra[i][0] = c; 
         arestas_extra[i][1] = us; 
         arestas_extra[i][2] = pl; 
+
+        if (u < 0 || u >= MAX || v < 0 || v >= MAX) {
+            printf("Verifique que as transicoes estao realmente sendo feitas entre estados no intervalo [0, %d)\n", MAX); 
+            return 0; 
+        } 
+
+        if (c < 0 || us < 0 || pl < 0) {
+            printf("Caractere de transicao nao reconhecido\n"); 
+            return 0; 
+        } 
 
         vai[u][v][c] = 1; 
         desempilha[u][v][c] = us; 
@@ -162,16 +189,17 @@ int main() {
 
 
     for (int i = 0; i < numero_estados; i++) {
-        scanf(" %d", &final[i]); // binary string with 1 on the i-th position telling that state i is final
+        scanf(" %d", &final[i]); 
     } 
 
     scanf(" %s", entrada); 
     tamanho_entrada = strlen(entrada); 
     printf("String de entrada: %s\n", entrada); 
     grafo(-1, -1); 
-    
+
     int q0 = 0; 
     printf((processa(q0, 0, deve_estar_vazia) ? "Aceita\n" : "Nao Aceita\n")); 
-    
     grafo_svg();    
+
+    return 0; 
 } 
