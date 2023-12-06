@@ -143,7 +143,6 @@ int main() {
     } 
 
     // printando saida
-    
     printf("Saida: "); 
     for (int i = 0; i < cvector_size(output); i++) printf("%c", output[i]); 
     printf("\n");
