@@ -36,7 +36,7 @@ void get_log(cvector_vector_type(char) results, int times_cars[MAX], int times_e
 int main() {
     srand(time(NULL)); 
 
-    FILE* automaton_file = fopen("autofinal", "r"); 
+    FILE* automaton_file = fopen("./files/autofinal", "r"); 
     fscanf(automaton_file, " %d", &numero_estados);
     fscanf(automaton_file, " %d", &numero_transicoes); 
     int deve_estar_vazia; fscanf(automaton_file, " %d", &deve_estar_vazia); 
@@ -92,7 +92,7 @@ int main() {
     fclose(automaton_file); 
 
     // taking models' strings from "car_models" (they are in order) 
-    FILE* inputs_file = fopen("./car_inputs", "r"); 
+    FILE* inputs_file = fopen("./files/car_inputs", "r"); 
     char inputs[8][mm]; 
     for (int i = 0; i < 8; i++) fscanf(inputs_file, "%s", inputs[i]); 
     fclose(inputs_file); 
@@ -108,19 +108,19 @@ int main() {
 
     // pegando tempo que cada um dos carros e erros demoram
     int duration_cars[MAX]; 
-    FILE* duration_cars_file = fopen("./duration_cars", "r"); 
+    FILE* duration_cars_file = fopen("./files/duration_cars", "r"); 
     for (int i = 0; i < 8; i++) fscanf(duration_cars_file, " %d", &duration_cars[i]); 
     fclose(duration_cars_file); 
 
     int duration_errors[MAX]; 
-    FILE* duration_errors_file = fopen("./duration_errors", "r"); 
+    FILE* duration_errors_file = fopen("./files/duration_errors", "r"); 
     for (int i = 0; i < 10; i++) fscanf(duration_errors_file, " %d", &duration_errors[i]); 
     fclose(duration_errors_file); 
 
     // pegando nomes de cada um dos passos
     char buffer[mm]; 
     char* steps[MAX]; 
-    FILE* steps_file = fopen("./steps", "r"); 
+    FILE* steps_file = fopen("./files/steps", "r"); 
     for (int i = 0; i < 10; i++) {
         fscanf(steps_file, " %s", buffer); 
         int tam = strlen(buffer); 
@@ -208,7 +208,7 @@ void menu() {
     printf("\n");   
     
     // pegando as especificacoes de cada modelo
-    FILE* models_file = fopen("./car_models", "r");
+    FILE* models_file = fopen("./files/car_models", "r");
     for (int j = 0; j < 8; j++) {
         char buffer[MAX];
         char* models[9];
