@@ -89,37 +89,33 @@ int main() {
     int F = 10; 
 
     vector<string> b = {"Chassi", "Motor", "Cambio", "Direcao", "Suspensao", "Freios", "Carroceria", "Pintura", "Sistema Eletrico", "Interior"}; 
-    vector<int> a = {8, 4, 2, 2, 2, 2, 3, 5, 1, 3}; 
-    vector<tuple<int, int, char, char, char, string>> T; 
+    vector<int> a = {8, 4, 2, 2, 1, 2, 4, 5, 1, 3}; 
+    vector<tuple<int, int, char, char, char, char>> T; 
     int N = a.size() + 2; 
 
     for (int j = 0; j < a[0]; j++) {
-        T.emplace_back(0, 1, (char)('0'+j), '$', (char)('0'+j), "$"); 
+        T.emplace_back(0, 1, (char)('0'+j), '$', (char)('0'+j), '$'); 
     } 
     for (int i = 1; i <= a.size(); i++) {
         for (int j = 0; j < a[i]; j++) {
-            T.emplace_back(i, i+1, (char)('0'+j), '$', '$', "$"); 
+            T.emplace_back(i, i+1, (char)('0'+j), '$', '$', '$'); 
         } 
     } 
-    for (int i = 1; i <= a.size(); i++) {
-        T.emplace_back(i, i, '^', '$', (char)('A'+i), "$"); 
+    for (int i = 0; i < a.size(); i++) {
+        T.emplace_back(i, i, '^', '$', (char)('A'+i), '$'); 
     } 
     for (int i = 0; i < 8; i++) {
-        string s = "Modelo "; 
-        s += (char)('0' + i); 
-        s += " fabricado com sucesso!"; 
-        T.emplace_back(F, F, '$', (char)('0'+i), '$', s); 
+        T.emplace_back(F, F, '$', (char)('0'+i), '$', (char)('0'+i)); 
     } 
     for (int i = 0; i < a.size(); i++) {
-        string s = "Erro ao tentar montar "; 
-        s += b[i]; 
-        T.emplace_back(F, F, '$', (char)('A'+i), '$',  s); 
+        T.emplace_back(F, F, '$', (char)('A'+i), '$',  (char)('A'+i)); 
     } 
 
-    T.emplace_back(F, S, '$', '?', '?', "$"); 
+    T.emplace_back(F, S, '$', '?', '?', '$'); 
+    T.emplace_back(S, F+1, '$', '?', '?', '&'); 
 
     int M = T.size(); 
-    cout << N << " " << M << " " << 1 << endl; 
+    cout << N << " " << M << " " << 0 << endl; 
     for (auto [b, c, d, e, f, g] : T) {
         cout << b << " " << c << " " << d << " " << e << " " << f << " " << g << endl;
     } 
@@ -130,10 +126,6 @@ int main() {
     for (int i = 0; i < N-1; i++) cout << 0 << " "; 
     cout << 1 << endl;
 
-    for (int i = 0; i < a.size(); i++) {
-        int v = rng()%a[i]; 
-        cout << (char)(v+'0'); 
-    } 
     cout << endl;
 }
 

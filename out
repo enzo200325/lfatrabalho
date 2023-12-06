@@ -1,173 +1,24 @@
-sa:  $
-
-sa:  $
-
-sa:  $
-
-sa:  $
-
-sa:  $
-
-sa:  $
-
-sa:  $
-
-sa:  $
-
-sa:  $
-
-sa:  $
-
-sa:  $
-
-sa:  $
-
-sa:  $
-
-sa:  $
-
-sa:  $
-
-sa:  $
-
-sa:  $
-
-sa:  $
-
-sa:  $
-
-sa:  $
-
-sa:  $
-
-sa:  $
-
-sa:  $
-
-sa:  $
-
-sa:  $
-
-sa:  $
-
-sa:  $
-
-sa:  $
-
-sa:  $
-
-sa:  $
-
-sa:  $
-
-sa:  $
-
-sa:  $
-
-sa:  $
-
-sa:  $
-
-sa:  $
-
-sa:  $
-
-sa:  $
-
-sa:  $
-
-sa:  $
-
-sa:  $
-
-sa:  $
-
-sa:  Modelo 0 fabricado com sucesso!
-
-sa:  Modelo 1 fabricado com sucesso!
-
-sa:  Modelo 2 fabricado com sucesso!
-
-sa:  Modelo 3 fabricado com sucesso!
-
-sa:  Modelo 4 fabricado com sucesso!
-
-sa:  Modelo 5 fabricado com sucesso!
-
-sa:  Modelo 6 fabricado com sucesso!
-
-sa:  Modelo 7 fabricado com sucesso!
-
-sa:  Erro ao tentar montar Chassi
-
-sa:  Erro ao tentar montar Motor
-
-sa:  Erro ao tentar montar Cambio
-
-sa:  Erro ao tentar montar Direcao
-
-sa:  Erro ao tentar montar Suspensao
-
-sa:  Erro ao tentar montar Freios
-
-sa:  Erro ao tentar montar Carroceria
-
-sa:  Erro ao tentar montar Pintura
-
-sa:  Erro ao tentar montar Sistema Eletrico
-
-sa:  Erro ao tentar montar Interior
-
-sa:  $
-
-i: 0 | final[i]: 0
-i: 1 | final[i]: 0
-i: 2 | final[i]: 0
-i: 3 | final[i]: 0
-i: 4 | final[i]: 0
-i: 5 | final[i]: 0
-i: 6 | final[i]: 0
-i: 7 | final[i]: 0
-i: 8 | final[i]: 0
-i: 9 | final[i]: 0
-i: 10 | final[i]: 0
-i: 11 | final[i]: 1
-String de entrada: 6301001400
-u: 0 | i: 0 | entrada[i]: 54
-u: 1 | i: 1 | entrada[i]: 51
-u: 2 | i: 2 | entrada[i]: 48
-u: 3 | i: 3 | entrada[i]: 49
-u: 4 | i: 4 | entrada[i]: 48
-u: 5 | i: 5 | entrada[i]: 48
-u: 6 | i: 6 | entrada[i]: 49
-u: 7 | i: 7 | entrada[i]: 52
-u: 8 | i: 8 | entrada[i]: 48
-u: 9 | i: 9 | entrada[i]: 48
-u: 10 | i: 10 | entrada[i]: 0
-desempilha: ?
-v: 0
-desempilha: J
-v: 10
+Modelo 1 - ()
+Modelo 2 - ()
+Modelo 3 - ()
+Modelo 4 - ()
+Modelo 5 - ()
+Modelo 6 - ()
+Modelo 7 - ()
+Modelo 8 - ()
+Escolha quantos de cada modelo deseja fazer no dia de hoje: 
+Modelo 1: 
+Modelo 2: 
+Modelo 3: 
+Modelo 4: 
+Modelo 5: 
+Modelo 6: 
+Modelo 7: 
+Modelo 8: 
+String de entrada: 14221213112211111113331111241244211225115311114213621111451171221133118411113112
+i: 11
+u: 0 | pos: 0
+u: 1 | pos: 1
 Nao Aceita
 saida: 
- $
-
- $
-
- $
-
- $
-
- $
-
- $
-
- $
-
- $
-
- $
-
- $
-
 
