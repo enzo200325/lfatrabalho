@@ -150,7 +150,7 @@ char* conv_min_to_time(int min) {
     char* time_str = malloc(sizeof(char) * 6); // Aloca memória para a string HH:MM\0
 
     if (time_str == NULL) {
-        return NULL; // Verifica se a alocação de memória falhou
+        return NULL; // Verifica se a alocacao de memoria falhou
     }
 
     sprintf(time_str, "%02d:%02d", hours, minutes); // Formata a string
@@ -271,7 +271,7 @@ void get_log(cvector_vector_type(char) results, int times_cars[MAX], int times_e
     int cur = 300; 
     int ok = 0;
 
-    int max_time = 400; 
+    int max_time = 390; 
 
     for (int i = 0; i < cvector_size(results); i++) {
         if (results[i] >= '0' && results[i] <= '7') { // type of car made 
@@ -311,4 +311,6 @@ void get_log(cvector_vector_type(char) results, int times_cars[MAX], int times_e
             printf("%s - ERRO na etapa %s!\n", conv_min_to_time(cur), steps[results[i]-'A']); 
         } 
     } 
+
+    printf("Final do Dia!\n"); 
 } 
