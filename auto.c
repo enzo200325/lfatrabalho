@@ -144,6 +144,19 @@ int main() {
     return 0; 
 } 
 
+char* conv_min_to_time(int min) {
+    int hours = min / 60; // Calcula as horas
+    int minutes = min % 60; // Calcula os minutos restantes
+    char* time_str = malloc(sizeof(char) * 6); // Aloca memória para a string HH:MM\0
+
+    if (time_str == NULL) {
+        return NULL; // Verifica se a alocação de memória falhou
+    }
+
+    sprintf(time_str, "%02d:%02d", hours, minutes); // Formata a string
+    return time_str; // Retorna a string formatada
+}
+
 int processa(int u, int pos, int deve_estar_vazia) {
     if (final[u]) return (deve_estar_vazia ? (cvector_size(stack) == 0) : 1); 
 
@@ -255,17 +268,25 @@ void get_input(char models[8][mm]) {
 } 
 
 void get_log(cvector_vector_type(char) results, int times_cars[MAX], int times_errors[MAX], char* steps[MAX]) {
-    int cur = 800;
+    int cur = 300; 
     int ok = 0;
+
+    int max_time = 400; 
 
     for (int i = 0; i < cvector_size(results); i++) {
         if (results[i] >= '0' && results[i] <= '7') { // type of car made 
             if(!ok) {
-                printf("%d: Fabricacao do [Modelo %d] INICIADA\n", cur, results[i]-'0'+1);
+                printf("%s - Fabricacao do [Modelo %d] INICIADA\n", conv_min_to_time(cur), results[i]-'0'+1);
                 ok = 1;
             }
             cur += times_cars[results[i]-'0']; 
-            printf("%d: Fabricacao do [Modelo %d] CONCLUIDA\n", cur, results[i]-'0'+1); 
+
+            if (cur > max_time) {
+                printf("Atingiu o tempo maximo!\n"); 
+                return; 
+            } 
+
+            printf("%s - Fabricacao do [Modelo %d] CONCLUIDA\n", conv_min_to_time(cur), results[i]-'0'+1); 
 
             char cc = '*'; 
             for (int j = i+1; j < cvector_size(results); j++) {
@@ -275,15 +296,19 @@ void get_log(cvector_vector_type(char) results, int times_cars[MAX], int times_e
                 } 
             } 
 
-            if (cc != '*') printf("%d: Fabricacao do [Modelo %d] INICIADA\n", cur, cc-'0'+1); 
+            if (cc != '*') printf("%s - Fabricacao do [Modelo %d] INICIADA\n", conv_min_to_time(cur), cc-'0'+1); 
         } 
         else if (results[i] >= 'A' && results[i] <= 'Z') { // error
             cur += times_errors[results[i]-'A']; 
+            if (cur > max_time) {
+                printf("Atingiu o tempo maximo!\n"); 
+                return; 
+            } 
             if(!ok) {
-                printf("%d: Fabricacao do [Modelo %d] INICIADA\n", cur, results[i]-'0'+1);
+                printf("%s - Fabricacao do [Modelo %d] INICIADA\n", conv_min_to_time(cur), results[i]-'A'+1);
                 ok = 1;
             }
-            printf("%d: ERRO na etapa %s!\n", cur, steps[results[i]-'A']); 
+            printf("%s - ERRO na etapa %s!\n", conv_min_to_time(cur), steps[results[i]-'A']); 
         } 
     } 
 } 
