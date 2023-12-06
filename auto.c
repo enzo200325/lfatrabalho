@@ -23,23 +23,11 @@ cvector_vector_type(char) output;
 
 typedef struct transicao {
     int v; 
-    char vai, empilha, desempilha, coloca_saida; 
+    char caractere, empilha, desempilha, coloca_saida; 
 } transicao; 
 cvector_vector_type(transicao) tran[MAX]; 
 
-void iniciar_grafo(FILE* arquivo);
-void adicionar_aresta(FILE* arquivo, int u, int v, char a, char b, char c);
-void terminar_grafo(FILE* arquivo);
-void adicionar_nodos(FILE* arquivo, int dest);
-void iniciar_label(FILE* arquivo); 
-void terminar_label(FILE* arquivo);
-void adicionar_espaco_label(FILE* arquivo);
-void adicionar_label(FILE* arquivo, char* s);
-void adicionar_label_palavra_destaque(FILE* arquivo, int posicao_destacada);
-void ajustar_tables(FILE* arquivo); 
-void grafo(int destaca, int destaca_letra);
 int processa(int u, int pos, int deve_estar_vazia);
-void grafo_svg();
 void linha();
 void menu();
 void get_input(char models[8][mm]);
@@ -88,14 +76,14 @@ int main() {
             return 0; 
         } 
 
-        transicao nt; 
-        nt.v = v; 
-        nt.vai = c; 
-        nt.desempilha = us; 
-        nt.empilha = pl; 
-        nt.coloca_saida = sa; 
+        transicao new_transition; 
+        new_transition.v = v; 
+        new_transition.caractere = c; 
+        new_transition.desempilha = us; 
+        new_transition.empilha = pl; 
+        new_transition.coloca_saida = sa; 
 
-        cvector_push_back(tran[u], nt); 
+        cvector_push_back(tran[u], new_transition); 
     } 
 
     for (int i = 0; i < numero_estados; i++) {
@@ -112,13 +100,11 @@ int main() {
     get_input(inputs); 
     linha();
     printf("\nString de entrada: %s\n", entrada); 
-    grafo(-1, -1); 
 
     int q0 = 0; 
 
     cvector_push_back(stack, '?'); 
     processa(q0, 0, deve_estar_vazia); 
-    //grafo_svg();    
 
     // pegando tempo que cada um dos carros e erros demoram
     int duration_cars[MAX]; 
@@ -158,96 +144,7 @@ int main() {
     return 0; 
 } 
 
-void iniciar_grafo(FILE* arquivo) {
-    fprintf(arquivo, "digraph {\n"); 
-    fprintf(arquivo, "rankdir=LR;\n"); 
-    fprintf(arquivo, "start [shape=point, width=0];\n"); 
-    fprintf(arquivo, "start -> 0;\n"); 
-} 
-
-void adicionar_aresta(FILE* arquivo, int u, int v, char a, char b, char c) {
-    fprintf(arquivo, "%d -> %d [label=\"%c, %c, %c\", fontsize=10];\n", u, v, a, b, c); 
-} 
-
-void terminar_grafo(FILE* arquivo) {
-    fprintf(arquivo, "}\n") ;
-} 
-
-void adicionar_nodos(FILE* arquivo, int dest) {
-    for (int i = 0; i < numero_estados; i++) {
-        if (i == dest) {
-            if (final[i]) {
-                fprintf(arquivo, "%d [shape=doublecircle, style=filled, color=red, fillcolor=\"#F1ADA3\", penwidth=2];\n", i); 
-            } 
-            else fprintf(arquivo, "%d [shape=circle, style=filled, color=red, fillcolor=\"#F1ADA3\", penwidth=2];\n", i); 
-        }
-        else {
-            if (final[i]) {
-                fprintf(arquivo, "%d [shape=doublecircle];\n", i); 
-            } 
-            else fprintf(arquivo, "%d [shape=circle];\n", i); 
-        } 
-    } 
-} 
-
-void iniciar_label(FILE* arquivo) {
-    fprintf(arquivo, "label = <<TABLE BORDER=\"0\" CELLBORDER=\"0\">"); 
-} 
-
-void terminar_label(FILE* arquivo) {
-    fprintf(arquivo, "</TABLE>>;"); 
-} 
-
-void adicionar_espaco_label(FILE* arquivo) {
-    fprintf(arquivo, "<TR><TD></TD></TR>");
-} 
-
-void adicionar_label(FILE* arquivo, char* s) {
-    fprintf(arquivo, "<TR><TD>%s</TD></TR>;", s);
-}
-
-void adicionar_label_palavra_destaque(FILE* arquivo, int posicao_destacada) {
-       fprintf(arquivo, "<TR><TD>"); 
-       for (int i = 0; i < tamanho_entrada; i++) {
-           char c = entrada[i]; 
-           if (i == posicao_destacada) fprintf(arquivo, "<SUB><FONT COLOR=\"red\">%c</FONT></SUB>", c); 
-           else fprintf(arquivo, "<SUB>%c</SUB>", c); 
-       } 
-       fprintf(arquivo, "</TD></TR>"); 
-} 
-
-void ajustar_tables(FILE* arquivo) {
-    fprintf(arquivo, "labeljust = \"r\"; labelloc = \"r\";"); 
-} 
-
-void grafo(int destaca, int destaca_letra) {
-    char nome_arquivo[20]; 
-    sprintf(nome_arquivo, "%d.dot", contador++); 
-    FILE* arquivo = fopen(nome_arquivo, "w"); 
-
-    iniciar_grafo(arquivo); 
-    for (int i = 0; i < numero_transicoes; i++) {
-        adicionar_aresta(arquivo, arestas[i][0], arestas[i][1], arestas_extra[i][0], arestas_extra[i][1], arestas_extra[i][2]); 
-    } 
-
-    char label_pilha[MAX+100]; 
-
-    iniciar_label(arquivo); 
-    adicionar_label_palavra_destaque(arquivo, destaca_letra); 
-    adicionar_espaco_label(arquivo); 
-    adicionar_label(arquivo, label_pilha); 
-    terminar_label(arquivo); 
-
-    ajustar_tables(arquivo); 
-
-    adicionar_nodos(arquivo, destaca); 
-    terminar_grafo(arquivo); 
-    fclose(arquivo); 
-}  
-
 int processa(int u, int pos, int deve_estar_vazia) {
-    //grafo(u, pos); 
-
     if (final[u]) return (deve_estar_vazia ? (cvector_size(stack) == 0) : 1); 
 
     int R = rand()%30000; 
@@ -262,10 +159,10 @@ int processa(int u, int pos, int deve_estar_vazia) {
         int v = tran[u][i].v; 
         char desempilha = tran[u][i].desempilha; 
         char empilha = tran[u][i].empilha; 
-        char vai = tran[u][i].vai; 
+        char caractere = tran[u][i].caractere; 
         char coloca_saida = tran[u][i].coloca_saida; 
 
-        if (vai == entrada[pos]) {
+        if (caractere == entrada[pos]) {
             if (desempilha != '$') {
                 if (cvector_size(stack) > 0 && stack[cvector_size(stack)-1] == desempilha) {
                     cvector_pop_back(stack); 
@@ -281,7 +178,7 @@ int processa(int u, int pos, int deve_estar_vazia) {
             } 
             return processa(v, pos + 1, deve_estar_vazia); 
         } 
-        else if (vai == '$') {
+        else if (caractere == '$') {
             if (desempilha != '$') {
                 if (cvector_size(stack) > 0 && stack[cvector_size(stack)-1] == desempilha) {
                     cvector_pop_back(stack); 
@@ -300,21 +197,13 @@ int processa(int u, int pos, int deve_estar_vazia) {
     return 0; 
 } 
 
-void grafo_svg() {
-    for(int i = 1; i < contador; i++) {
-        char comando[40];
-        sprintf(comando, "dot -Tsvg %d.dot > frame%d.svg", i, i);
-        system(comando);
-    }
-}
-
 void linha() {
     printf("\n============================================================================================\n");
 }
 
 void menu() {
     linha();
-    printf("=                                    MARZO CARS                                            =");
+    printf("=                                        MARZO CARS                                        =");
     linha();
     printf("\n");   
     
